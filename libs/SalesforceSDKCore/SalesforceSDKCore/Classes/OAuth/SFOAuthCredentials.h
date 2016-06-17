@@ -24,6 +24,7 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
 /**
  @enum Logging levels to control the verbosity of log output based on the severity of the event being logged.
  */
@@ -91,7 +92,7 @@ typedef NS_ENUM(NSInteger, SFOAuthCredentialsStorageType){
  `nil` or empty value prior to accessing properties or methods identified in the documentation regarding this prohibition.
  @warning This property must not be modified while authenticating.
  */
-@property (copy) NSString *identifier;
+@property (nullable, copy) NSString *identifier;
 
 /** Client consumer key.
  
@@ -100,7 +101,7 @@ typedef NS_ENUM(NSInteger, SFOAuthCredentialsStorageType){
  @warning This property must not be `nil` or empty when authentication is initiated or an exception will be raised.
  @warning This property must not be modified while authenticating.
  */
-@property (copy) NSString *clientId;
+@property (nullable, copy) NSString *clientId;
 
 /** Callback URL to load at the end of the authentication process.
  
@@ -116,7 +117,7 @@ typedef NS_ENUM(NSInteger, SFOAuthCredentialsStorageType){
  @warning The setter for this property is exposed publicly only for unit tests. Client code should not set this property.
  @exception NSInternalInconsistencyException If accessed while the identifier property is `nil`.
  */
-@property (nonatomic, copy) NSString *activationCode;
+@property (nullable, nonatomic, copy) NSString *activationCode;
 
 /** Token used to refresh the user's session.
  
@@ -125,7 +126,7 @@ typedef NS_ENUM(NSInteger, SFOAuthCredentialsStorageType){
  @warning The setter for this property is exposed publicly only for unit tests. Client code should use the revoke methods instead.
  @exception NSInternalInconsistencyException If this property is accessed when the identifier property is `nil`.
  */
-@property (nonatomic, copy) NSString *refreshToken;
+@property (nullable, nonatomic, copy) NSString *refreshToken;
 
 /** The access token for the user's session.
  
@@ -134,7 +135,7 @@ typedef NS_ENUM(NSInteger, SFOAuthCredentialsStorageType){
  @warning The setter for this property is exposed publicly only for unit tests. Client code should use the revoke methods instead.
  @exception NSInternalInconsistencyException If accessed while the identifier property is `nil`.
  */
-@property (nonatomic, copy) NSString *accessToken;
+@property (nullable, nonatomic, copy) NSString *accessToken;
 
 /** A readonly convenience property returning the Salesforce Organization ID provided in the path component of the identityUrl.
  
@@ -143,7 +144,7 @@ typedef NS_ENUM(NSInteger, SFOAuthCredentialsStorageType){
  @warning The setter for this property is exposed publicly only for unit tests. Client code should not set this property.
  @exception NSInternalInconsistencyException If accessed while the identifier property is `nil`.
  */
-@property (nonatomic, copy) NSString *organizationId;
+@property (nullable, nonatomic, copy) NSString *organizationId;
 
 /** The URL of the server instance for this session. This URL always refers to the base organization
  instance, even if the user has logged through a community-based login flow.
@@ -154,21 +155,21 @@ typedef NS_ENUM(NSInteger, SFOAuthCredentialsStorageType){
  
  @warning The setter for this property is exposed publicly only for unit tests. Client code should not set this property.
  */
-@property (nonatomic, copy) NSURL *instanceUrl;   
+@property (nullable, nonatomic, copy) NSURL *instanceUrl;
 
 /** The community ID the user choose to log into. This usually happens when the user
  logs into the app using a community-based login page
  
  Note: this property is nil of the user logs into the internal community or into an org that doesn't have communities.
  */
-@property (nonatomic, copy) NSString *communityId;
+@property (nullable, nonatomic, copy) NSString *communityId;
 
 /** The community-base URL the user choose to log into. This usually happens when the user
  logs into the app using a community-based login page
  
  Note: this property is nil of the user logs into the internal community or into an org that doesn't have communities.
  */
-@property (nonatomic, copy) NSURL *communityUrl;
+@property (nullable, nonatomic, copy) NSURL *communityUrl;
 
 /** The timestamp when the session access token was issued.
  
@@ -176,7 +177,7 @@ typedef NS_ENUM(NSInteger, SFOAuthCredentialsStorageType){
  
  @warning The setter for this property is exposed publicly only for unit tests. Client code should not set this property.
  */
-@property (nonatomic, copy) NSDate *issuedAt;     
+@property (nullable, nonatomic, copy) NSDate *issuedAt;
 
 /** The identity URL for the user returned as part of a successful authentication response.
  The format of the URL is: _https://login.salesforce.com/ID/orgID/userID_ where orgId is the ID of the Salesforce organization 
@@ -186,17 +187,17 @@ typedef NS_ENUM(NSInteger, SFOAuthCredentialsStorageType){
  
  @warning The setter for this property is exposed publicly only for unit tests. Client code should not set this property.
  */
-@property (nonatomic, copy) NSURL *identityUrl;
+@property (nullable, nonatomic, copy) NSURL *identityUrl;
 
 /**
  Contains legacy identity service information from some previous app versions. Not
  applicable to most applications.  See SFIdentityData for current identity management.
  */
-@property (nonatomic, readonly) NSDictionary *legacyIdentityInformation;
+@property (nullable, nonatomic, readonly) NSDictionary *legacyIdentityInformation;
 
 /** The community URL, if present. The instance URL, otherwise.
  */
-@property (readonly) NSURL *apiUrl;
+@property (nullable, readonly) NSURL *apiUrl;
 
 /** A readonly convenience property returning the first 15 characters of the Salesforce User ID provided in the final path 
  component of the identityUrl.
@@ -205,7 +206,7 @@ typedef NS_ENUM(NSInteger, SFOAuthCredentialsStorageType){
  
  @warning The setter for this property is exposed publicly only for unit tests. Client code should not set this property.
  */
-@property (nonatomic, copy) NSString *userId;
+@property (nullable, nonatomic, copy) NSString *userId;
 
 /**
  The log level controlling which events are logged based on their severity.
@@ -223,7 +224,7 @@ typedef NS_ENUM(NSInteger, SFOAuthCredentialsStorageType){
  A dictionary containing key-value pairs for any of the keys provided via the additionalOAuthParameterKeys property of SFAuthenticationManager.
  If a key does not match a value in the parsed response, then it will not exist in the dictionary.
  */
-@property (nonatomic, readonly) NSDictionary * additionalOAuthFields;
+@property (nonatomic, readonly) NSDictionary<NSString*, id> * additionalOAuthFields;
 
 ///---------------------------------------------------------------------------------------
 /// @name Initialization
@@ -239,7 +240,7 @@ typedef NS_ENUM(NSInteger, SFOAuthCredentialsStorageType){
  @param encrypted Determines if the sensitive data like refreshToken and accessToken should be encrypted
  @return An initialized authentication credential object.
  */
-- (instancetype)initWithIdentifier:(NSString *)theIdentifier clientId:(NSString *)theClientId encrypted:(BOOL)encrypted;
+- (instancetype)initWithIdentifier:(nullable NSString *)theIdentifier clientId:(nullable NSString *)theClientId encrypted:(BOOL)encrypted;
 
 /** Initializes an authentication credential object with the given identifier and client ID. This is the designated initializer.
  
@@ -252,7 +253,7 @@ typedef NS_ENUM(NSInteger, SFOAuthCredentialsStorageType){
  @param type Indicates whether the OAuth credentials are stored in the keychain
  @return An initialized authentication credential object.
  */
-- (instancetype)initWithIdentifier:(NSString *)theIdentifier clientId:(NSString *)theClientId encrypted:(BOOL)encrypted storageType:(SFOAuthCredentialsStorageType)type;
+- (instancetype)initWithIdentifier:(nullable NSString *)theIdentifier clientId:(nullable NSString *)theClientId encrypted:(BOOL)encrypted storageType:(SFOAuthCredentialsStorageType)type;
 
 /** Revoke the OAuth access and refresh tokens.
  
@@ -279,3 +280,5 @@ typedef NS_ENUM(NSInteger, SFOAuthCredentialsStorageType){
 - (void)revokeActivationCode;
 
 @end
+
+NS_ASSUME_NONNULL_END
