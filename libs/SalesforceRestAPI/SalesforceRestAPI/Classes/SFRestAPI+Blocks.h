@@ -27,6 +27,8 @@
 #import <Foundation/Foundation.h>
 #import "SFRestAPI.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface SFRestAPI (Blocks) <SFRestDelegate>
 
 // Block types
@@ -126,7 +128,7 @@ typedef void (^SFRestResponseBlock) (id response);
  */
 - (SFRestRequest *) performRetrieveWithObjectType:(NSString *)objectType 
                                          objectId:(NSString *)objectId 
-                                        fieldList:(NSArray *)fieldList 
+                                        fieldList:(NSArray<NSString*> *)fieldList
                                         failBlock:(SFRestFailBlock)failBlock 
                                     completeBlock:(SFRestDictionaryResponseBlock)completeBlock;
 
@@ -141,7 +143,7 @@ typedef void (^SFRestResponseBlock) (id response);
  */
 - (SFRestRequest *) performUpdateWithObjectType:(NSString *)objectType 
                                        objectId:(NSString *)objectId 
-                                         fields:(NSDictionary *)fields 
+                                         fields:(NSDictionary<NSString*, id> *)fields
                                       failBlock:(SFRestFailBlock)failBlock 
                                   completeBlock:(SFRestDictionaryResponseBlock)completeBlock;
 
@@ -158,7 +160,7 @@ typedef void (^SFRestResponseBlock) (id response);
 - (SFRestRequest *) performUpsertWithObjectType:(NSString *)objectType 
                                 externalIdField:(NSString *)externalIdField 
                                      externalId:(NSString *)externalId 
-                                         fields:(NSDictionary *)fields 
+                                         fields:(NSDictionary<NSString*, id> *)fields
                                       failBlock:(SFRestFailBlock)failBlock 
                                   completeBlock:(SFRestDictionaryResponseBlock)completeBlock;
 
@@ -184,7 +186,7 @@ typedef void (^SFRestResponseBlock) (id response);
  * @return the newly sent SFRestRequest
  */
 - (SFRestRequest *) performCreateWithObjectType:(NSString *)objectType 
-                                         fields:(NSDictionary *)fields 
+                                         fields:(NSDictionary<NSString*, id> *)fields
                                       failBlock:(SFRestFailBlock)failBlock 
                                   completeBlock:(SFRestDictionaryResponseBlock)completeBlock;
 
@@ -258,8 +260,10 @@ typedef void (^SFRestResponseBlock) (id response);
 
 - (SFRestRequest *) performRequestWithMethod:(SFRestMethod)method
                                         path:(NSString*)path
-                                 queryParams:(NSDictionary*)queryParams
+                                 queryParams:(NSDictionary<NSString*, id> *)queryParams
                                    failBlock:(SFRestFailBlock)failBlock
                                completeBlock:(SFRestDictionaryResponseBlock)completeBlock;
 
 @end
+
+NS_ASSUME_NONNULL_END
