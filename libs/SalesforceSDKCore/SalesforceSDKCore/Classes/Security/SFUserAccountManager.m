@@ -393,7 +393,7 @@ static const NSUInteger SFUserAccountManagerCannotRetrieveUserData = 10003;
         [self loadAccounts:nil];
     }
     if ([self.userAccountMap count] == 0) {
-        return nil;
+        return @[];
     }
     
     NSMutableArray *accounts = [NSMutableArray array];
@@ -633,10 +633,14 @@ static const NSUInteger SFUserAccountManagerCannotRetrieveUserData = 10003;
     }
     
     self.previousCommunityId = self.activeCommunityId;
-    
-    SFUserAccount *account = [self userAccountForUserIdentity:curUserIdentity];
-    account.communityId = self.previousCommunityId;
-    self.currentUser = account;
+
+    if(curUserIdentity){
+        SFUserAccount *account = [self userAccountForUserIdentity:curUserIdentity];
+        account.communityId = self.previousCommunityId;
+        self.currentUser = account;
+    }else{
+        self.currentUser = nil;
+    }
     
     // update the client ID in case it's changed (via settings, etc)
     self.currentUser.credentials.clientId = self.oauthClientId;
