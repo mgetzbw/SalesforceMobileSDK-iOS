@@ -226,7 +226,7 @@ SFLogLevel SFLoggerContextLogLevels[SF_LOG_MAX_IDENTIFIER_COUNT];
 @implementation NSObject (SFLogging)
 
 + (NSString*)loggingIdentifier {
-    return nil;
+    return (NSString* _Nonnull)nil;
 }
 
 - (void)log:(SFLogLevel)level msg:(NSString *)msg {
